@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch YouTube Video</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+        }
+        button {
+            padding: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        iframe {
+            margin-top: 20px;
+            width: 800px;
+            height: 450px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Watch YouTube Videos</h1>
+    <p>Enter a YouTube URL below to watch the video:</p>
+    
+    <input type="text" id="videoURL" placeholder="Enter YouTube URL">
+    <button onclick="loadVideo()">Watch Video</button>
+
+    <div id="videoContainer"></div>
+
+    <script>
+        function loadVideo() {
+            const urlInput = document.getElementById("videoURL").value;
+            const videoId = extractVideoID(urlInput);
+            
+            if (videoId) {
+                const iframe = document.createElement("iframe");
+                iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                iframe.allowFullscreen = true;
+
+                const videoContainer = document.getElementById("videoContainer");
+                videoContainer.innerHTML = ''; // Clear any previous video
+                videoContainer.appendChild(iframe);
+            } else {
+                alert("Invalid YouTube URL");
+            }
+        }
+
+        function extractVideoID(url) {
+            const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)|youtu\.be\/([a-zA-Z0-9_-]+)/;
+            const match = url.match(regex);
+            return match ? match[1] || match[2] : null;
+        }
+    </script>
+
+</body>
+</html>
